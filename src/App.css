@@ -1,0 +1,39 @@
+body {
+  padding-left: 2rem;
+  padding-top: 1rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap; /* Zeilenumbruch bei zu vielen Cards */
+  gap: 1rem; /* Abstand zwischen den Cards */
+  list-style: none; /* Entfernt die Bullet Points */
+  padding: 0;
+}
+
+.search-input {
+  max-width: 335px;
+}
+
+.accordion-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  max-width: 400px;
+}
+
+.accordion-trigger:hover {
+  background-color: #f9f9f9;
+}
+
+.bg-gray-100 {
+  background-color: #f3f4f6; /* hellgrau */
+}
