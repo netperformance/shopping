@@ -13,10 +13,6 @@ body {
   padding: 0;
 }
 
-.search-input {
-  max-width: 335px;
-}
-
 .accordion-trigger {
   display: flex;
   justify-content: space-between;

@@ -12,6 +12,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
+import { X } from 'lucide-react';
+
 function App() {
   // React-Zustand: aktuelle Einkaufsliste (array of strings)
   // useState ist ein Hook, der es uns ermöglicht, den Zustand einer Komponente zu verwalten
@@ -84,12 +86,14 @@ function App() {
         'Reissirup',
         'Salz',
         'Meersalz',
+        'Steinsalz',
         'Reis',
         'Basmatireis',
         'Jasminreis',
         'Vollkornreis',
         'Risottoreis',
         'Milchreis',
+        'Sushireis',
         'Couscous',
         'Bulgur',
         'Polenta',
@@ -105,6 +109,7 @@ function App() {
         'Eiernudeln',
         'Linsen',
         'Rote Linsen',
+        'Gelbe Linsen',
         'Grüne Linsen',
         'Berglinsen',
         'Kichererbsen',
@@ -363,6 +368,7 @@ function App() {
       'Blauschimmelkäse',
       'Weichkäse',
       'Hartkäse',
+      'Kondenzmilch',
       'Schnittkäse'
     ] },
     { title: "Fleisch & Fisch", key: "item-4", produkte: [
@@ -662,22 +668,40 @@ function App() {
 
       <p className="mt-10 mb-4 text-red-600">Produkte</p>
 
-      {/* Eingabefeld zum Suchen mit Neu-Button */}
       <div className="flex items-center gap-2">
-        <Input
-          className="search-input text-xl"
-          type="text"
-          placeholder="Produkt suchen..."
-          value={searchTerm}
-          onChange={(event) => setSearchTerm(event.target.value)}
-        />
-        <Button disabled={!isNewProduct} onClick={() => {
-          if (isNewProduct) {
-            setEigeneProdukte([...eigeneProdukte, searchTerm.trim()]);
-            setOpenAccordions(prev => [...new Set([...prev, 'eigene-produkte'])]);
-          }
-        }}>Neu</Button>
+        {/* Suchfeld mit X-Icon im Inneren */}
+        <div className="relative" style={{ width: "335px" }}>
+          <Input
+            type="text"
+            placeholder="Produkt suchen..."
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            className="text-xl pr-10"
+          />
+          {searchTerm && (
+            <button
+              type="button"
+              onClick={() => setSearchTerm('')}
+              className="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-gray-600"
+              aria-label="Eingabe löschen"
+            >
+              <X size={18} />
+            </button>
+          )}
+        </div>
+        <Button
+          disabled={!isNewProduct}
+          onClick={() => {
+            if (isNewProduct) {
+              setEigeneProdukte([...eigeneProdukte, searchTerm.trim()]);
+              setOpenAccordions(prev => [...new Set([...prev, 'eigene-produkte'])]);
+            }
+          }}
+        >
+          Neu
+        </Button>
       </div>
+
 
       <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions} className="border-none">
         {/* Eigene Produkte anzeigen */}
