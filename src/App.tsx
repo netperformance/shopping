@@ -1,22 +1,22 @@
-import './App.css';
-import Product from './components/product';
-import { useState, useEffect } from 'react';
+import "./App.css";
+import Product from "./components/product";
+import { useState, useEffect } from "react";
 
 // UI components from shadcn
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
+} from "@/components/ui/accordion";
 
 // Icon for clearing the search input
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
 
 // Import product data from a local JSON file
-import produktData from './data/products.json';
+import produktData from "./data/products.json";
 
 // Type definition for a product category
 type ProductCategory = {
@@ -29,12 +29,11 @@ type ProductCategory = {
 const categories: ProductCategory[] = produktData;
 
 function App() {
-  
   // State for the shopping list (array of product names)
   const [shoppingList, setShoppingList] = useState<string[]>([]);
 
   // State for the current search input
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   // State for currently open accordion sections
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
@@ -51,37 +50,50 @@ function App() {
 
   // Removes a product from the shopping list
   const removeFromShoppingList = (productName: string) => {
-    const updatedList = shoppingList.filter((existingProduct) => existingProduct !== productName);
+    const updatedList = shoppingList.filter(
+      (existingProduct) => existingProduct !== productName
+    );
     setShoppingList(updatedList);
   };
 
   // Checks if a product name exists in either predefined categories or custom products
   const productExists = (name: string): boolean => {
-    const inCategories = categories.some(kat => kat.produkte.some(p => p.toLowerCase() === name.toLowerCase()));
-    const inCustom = customProducts.some(p => p.toLowerCase() === name.toLowerCase());
+    const inCategories = categories.some((kat) =>
+      kat.produkte.some((p) => p.toLowerCase() === name.toLowerCase())
+    );
+    const inCustom = customProducts.some(
+      (p) => p.toLowerCase() === name.toLowerCase()
+    );
     return inCategories || inCustom;
   };
 
   // True if the search term is not yet in the list of known products
-  const isNewProduct = searchTerm.trim() !== '' && !productExists(searchTerm.trim());
+  const isNewProduct =
+    searchTerm.trim() !== "" && !productExists(searchTerm.trim());
 
   // Effect: Automatically opens matching categories when the search term changes
   useEffect(() => {
-    if (searchTerm.trim() === '') {
+    if (searchTerm.trim() === "") {
       setOpenAccordions([]);
       return;
     }
 
     // Find all category keys with products that match the search term
     const matchingKeys = categories
-      .filter(category => category.produkte.some(productName =>
-        productName.toLowerCase().startsWith(searchTerm.toLowerCase())
-      ))
-      .map(category => category.key);
+      .filter((category) =>
+        category.produkte.some((productName) =>
+          productName.toLowerCase().startsWith(searchTerm.toLowerCase())
+        )
+      )
+      .map((category) => category.key);
 
-      // Add custom section if custom products match the search
-      if (customProducts.some(p => p.toLowerCase().startsWith(searchTerm.toLowerCase()))) {
-        matchingKeys.push('eigene-produkte');
+    // Add custom section if custom products match the search
+    if (
+      customProducts.some((p) =>
+        p.toLowerCase().startsWith(searchTerm.toLowerCase())
+      )
+    ) {
+      matchingKeys.push("eigene-produkte");
     }
 
     setOpenAccordions(matchingKeys);
@@ -90,9 +102,10 @@ function App() {
   return (
     <>
       {/* Header for the shopping list */}
-      <p className='text-red-600'>Einkaufsliste</p>
+      <p className="text-red-600">Einkaufsliste</p>
       <p className="text-gray-500 italic mt-2">
-        {shoppingList.length === 0 && 'Leer'}
+        {/* If 'true' then show 'Leer' */}
+        {shoppingList.length === 0 && "Leer"}
       </p>
       {/* Render the current shopping list */}
       <ul className="product-list">
@@ -123,7 +136,7 @@ function App() {
           {searchTerm && (
             <button
               type="button"
-              onClick={() => setSearchTerm('')}
+              onClick={() => setSearchTerm("")}
               className="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-gray-600"
               aria-label="Eingabe löschen"
             >
@@ -137,7 +150,9 @@ function App() {
           onClick={() => {
             if (isNewProduct) {
               setCustomProducts([...customProducts, searchTerm.trim()]);
-              setOpenAccordions(prev => [...new Set([...prev, 'eigene-produkte'])]);
+              setOpenAccordions((prev) => [
+                ...new Set([...prev, "eigene-produkte"]),
+              ]);
             }
           }}
         >
@@ -146,37 +161,45 @@ function App() {
       </div>
 
       {/* Accordion displaying both default and custom product categories */}
-      <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions} className="border-none">
+      <Accordion
+        type="multiple"
+        value={openAccordions}
+        onValueChange={setOpenAccordions}
+        className="border-none"
+      >
         {/* Custom products section */}
         {customProducts.length > 0 && (
-          <AccordionItem key="eigene-produkte" value="eigene-produkte" className="border-none">
+          <AccordionItem
+            key="eigene-produkte"
+            value="eigene-produkte"
+            className="border-none"
+          >
             <AccordionTrigger className="accordion-trigger mt-2 font-bold text-xl">
               Eigene Produkte
             </AccordionTrigger>
             <AccordionContent>
               <ul className="product-list">
-                {customProducts.filter((productName) =>
-                  productName.toLowerCase().startsWith(searchTerm.toLowerCase())
-                ).map((productName, index) => (
-                  <Product
-                    key={`eigene-${index}`}
-                    name={productName}
-                    onAction={() => addToShoppingList(productName)}
-                    isAdded={shoppingList.includes(productName)}
-                  />
-                ))}
+              {/* Renders a list of custom products filtered by the search term. If the search term is empty, all custom products are displayed. 
+                  Otherwise, only products whose names start with the search term are shown. */}
+                {customProducts.filter((productName) => productName.toLowerCase().startsWith(searchTerm.toLowerCase())).map((productName, index) => (
+                    <Product
+                      key={`eigene-${index}`}
+                      name={productName}
+                      onAction={() => addToShoppingList(productName)}
+                      isAdded={shoppingList.includes(productName)}
+                    />
+                  ))}
               </ul>
             </AccordionContent>
           </AccordionItem>
         )}
 
         {/* Render all categories from JSON data */}
+        {/* Each category is an accordion item. The products within each category are filtered based on the search term. */}
+        {/* If the search term is empty, all products in that category are displayed. */}
         {categories.map(({ title, key, produkte }) => {
-          const filteredProducts = produkte.filter((productName) =>
-            productName.toLowerCase().startsWith(searchTerm.toLowerCase())
-          );
-
-          if (searchTerm.trim() !== '' && filteredProducts.length === 0) {
+          const filteredProducts = produkte.filter((productName) => productName.toLowerCase().startsWith(searchTerm.toLowerCase()));
+          if (searchTerm.trim() !== "" && filteredProducts.length === 0) {
             return null;
           }
 

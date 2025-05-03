@@ -1,8 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
 interface ProductProps {
   name: string;
@@ -16,7 +12,7 @@ const Product = ({ name, onAction, isAdded = false }: ProductProps) => {
       <Card
         onClick={onAction}
         className={`w-45 h-24 mt-2 cursor-pointer transition hover:bg-blue-100 ${
-          isAdded ? 'bg-gray-100' : ''
+          isAdded ? "bg-gray-100" : ""
         }`}
       >
         <CardContent>
