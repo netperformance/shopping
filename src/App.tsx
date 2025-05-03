@@ -14,22 +14,23 @@ import {
 
 import { X } from 'lucide-react';
 
-// Produktdaten importieren
-import produktDaten from './data/products.json';
+// produktData importieren
+import produktData from './data/products.json';
 
-type ProduktKategorie = {
+type ProductCategory = {
   title: string;
   key: string;
   produkte: string[];
 };
 
-const categories: ProduktKategorie[] = produktDaten;
+const categories: ProductCategory[] = produktData;
 
 function App() {
+  
   const [shoppingList, setShoppingList] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
-  const [eigeneProdukte, setEigeneProdukte] = useState<string[]>([]);
+  const [customProducts, setCustomProducts] = useState<string[]>([]);
 
   const addToShoppingList = (productName: string) => {
     if (!shoppingList.includes(productName)) {
@@ -43,9 +44,9 @@ function App() {
   };
 
   const productExists = (name: string): boolean => {
-    const inKategorien = categories.some(kat => kat.produkte.some(p => p.toLowerCase() === name.toLowerCase()));
-    const inEigene = eigeneProdukte.some(p => p.toLowerCase() === name.toLowerCase());
-    return inKategorien || inEigene;
+    const inCategories = categories.some(kat => kat.produkte.some(p => p.toLowerCase() === name.toLowerCase()));
+    const inCustom = customProducts.some(p => p.toLowerCase() === name.toLowerCase());
+    return inCategories || inCustom;
   };
 
   const isNewProduct = searchTerm.trim() !== '' && !productExists(searchTerm.trim());
@@ -62,12 +63,12 @@ function App() {
       ))
       .map(category => category.key);
 
-    if (eigeneProdukte.some(p => p.toLowerCase().startsWith(searchTerm.toLowerCase()))) {
+    if (customProducts.some(p => p.toLowerCase().startsWith(searchTerm.toLowerCase()))) {
       matchingKeys.push('eigene-produkte');
     }
 
     setOpenAccordions(matchingKeys);
-  }, [searchTerm, eigeneProdukte]);
+  }, [searchTerm, customProducts]);
 
   return (
     <>
@@ -112,7 +113,7 @@ function App() {
           disabled={!isNewProduct}
           onClick={() => {
             if (isNewProduct) {
-              setEigeneProdukte([...eigeneProdukte, searchTerm.trim()]);
+              setCustomProducts([...customProducts, searchTerm.trim()]);
               setOpenAccordions(prev => [...new Set([...prev, 'eigene-produkte'])]);
             }
           }}
@@ -122,14 +123,14 @@ function App() {
       </div>
 
       <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions} className="border-none">
-        {eigeneProdukte.length > 0 && (
+        {customProducts.length > 0 && (
           <AccordionItem key="eigene-produkte" value="eigene-produkte" className="border-none">
             <AccordionTrigger className="accordion-trigger mt-2 font-bold text-xl">
               Eigene Produkte
             </AccordionTrigger>
             <AccordionContent>
               <ul className="product-list">
-                {eigeneProdukte.filter((productName) =>
+                {customProducts.filter((productName) =>
                   productName.toLowerCase().startsWith(searchTerm.toLowerCase())
                 ).map((productName, index) => (
                   <Product
