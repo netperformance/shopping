@@ -149,7 +149,10 @@ function App() {
           disabled={!isNewProduct}
           onClick={() => {
             if (isNewProduct) {
-              setCustomProducts([...customProducts, searchTerm.trim()]);
+              setCustomProducts((prevCustomProducts) => [
+                ...prevCustomProducts,
+                searchTerm.trim(),
+              ]);
               setOpenAccordions((prev) => [
                 ...new Set([...prev, "eigene-produkte"]),
               ]);
@@ -179,15 +182,41 @@ function App() {
             </AccordionTrigger>
             <AccordionContent>
               <ul className="product-list">
-              {/* Renders a list of custom products filtered by the search term. If the search term is empty, all custom products are displayed. 
-                  Otherwise, only products whose names start with the search term are shown. */}
-                {customProducts.filter((productName) => productName.toLowerCase().startsWith(searchTerm.toLowerCase())).map((productName, index) => (
-                    <Product
+                {customProducts
+                  .filter((productName) =>
+                    productName
+                      .toLowerCase()
+                      .startsWith(searchTerm.toLowerCase())
+                  )
+                  .map((productName, index) => (
+                    <div
                       key={`eigene-${index}`}
-                      name={productName}
-                      onAction={() => addToShoppingList(productName)}
-                      isAdded={shoppingList.includes(productName)}
-                    />
+                      className="relative flex items-center pb-2 mb-2"
+                    >
+                      <Product
+                        name={productName}
+                        onAction={() => addToShoppingList(productName)}
+                        isAdded={shoppingList.includes(productName)}
+                      />
+                      {/* Add the X icon for removing custom products */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          // Remove from custom products
+                          setCustomProducts((prev) =>
+                            prev.filter((p) => p !== productName)
+                          );
+                          // Remove from shopping list
+                          setShoppingList((prev) =>
+                            prev.filter((p) => p !== productName)
+                          );
+                        }}
+                        className="absolute top-0 right-0 text-gray-400 hover:text-gray-600"
+                        aria-label={`Remove ${productName}`}
+                      >
+                        <X size={18} className="mt-3.5 mr-2" />
+                      </button>
+                    </div>
                   ))}
               </ul>
             </AccordionContent>
@@ -195,10 +224,10 @@ function App() {
         )}
 
         {/* Render all categories from JSON data */}
-        {/* Each category is an accordion item. The products within each category are filtered based on the search term. */}
-        {/* If the search term is empty, all products in that category are displayed. */}
         {categories.map(({ title, key, produkte }) => {
-          const filteredProducts = produkte.filter((productName) => productName.toLowerCase().startsWith(searchTerm.toLowerCase()));
+          const filteredProducts = produkte.filter((productName) =>
+            productName.toLowerCase().startsWith(searchTerm.toLowerCase())
+          );
           if (searchTerm.trim() !== "" && filteredProducts.length === 0) {
             return null;
           }
