@@ -25,6 +25,7 @@
             "Meersalz",
             "Steinsalz",
             "Reis",
+            "Suhi-Reis",
             "Basmatireis",
             "Jasminreis",
             "Vollkornreis",
@@ -89,6 +90,7 @@
             "Olivenöl",
             "Leinöl",
             "Essig",
+            "Reisessig",
             "Weißweinessig",
             "Apfelessig",
             "Balsamicoessig",
@@ -135,7 +137,9 @@
             "Grüntee",
             "Kräutertee",
             "Früchtetee",
-            "Gewürze allgemein"
+            "Nori-Blätter",
+            "Gewürze allgemein",
+            "Wasabi"
         ]
     },
     {
