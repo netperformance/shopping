@@ -10,6 +10,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
+import WelcomePage from "./pages/WelcomePage";
 
 function App() {
   return (
@@ -21,6 +22,13 @@ function App() {
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link to="/" className="text-gray-600 hover:underline text-sm px-2 py-1">
+                  Welcome
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link to="/list" className="text-gray-600 hover:underline text-sm px-2 py-1">
                   Einkaufsliste
                 </Link>
               </NavigationMenuLink>
@@ -38,7 +46,8 @@ function App() {
 
       <main className="p-4">
         <Routes>
-          <Route path="/" element={<ShoppingListPage />} />
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/list" element={<ShoppingListPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </main>
