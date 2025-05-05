@@ -7,12 +7,22 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+
+# Build
 dist
 dist-ssr
+
+# Local environment
 *.local
 
-# Editor directories and files
+# Docker (falls vorhanden)
+Dockerfile
+docker-compose.yml
+nginx/
+
+# Editor config
 .vscode/*
 !.vscode/extensions.json
 .idea

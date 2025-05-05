@@ -11,8 +11,10 @@ import ShoppingListPage from "./pages/ShoppingListPage"
 import ProfilePage from "./pages/ProfilePage"
 import WelcomePage from "./pages/WelcomePage"
 import ContactPage from "./pages/ContactPage"
+import ProtectedRoute from "./components/ProtectedRoute"
 
 import { supabase } from "./lib/supabaseClient"
+import { Session } from "@supabase/supabase-js"
 
 import {
   NavigationMenu,
@@ -22,10 +24,9 @@ import {
 } from "@/components/ui/navigation-menu"
 
 import logo from "@/assets/shopping-logo.jpg"
-import ProtectedRoute from "./components/ProtectedRoute"
 
 function AppWrapper() {
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState<Session | null>(null)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -51,7 +52,6 @@ function AppWrapper() {
   return (
     <>
       <header className="border-b mb-4 px-4 py-3 flex items-center justify-between">
-        {/* 🔁 Logo ist jetzt klickbar und abhängig vom Login-Status */}
         <Link to={session ? "/list" : "/"} className="flex items-center gap-2">
           <img src={logo} alt="Logo" className="h-8 w-auto" />
           <span className="text-lg font-semibold">Shopping</span>
@@ -78,7 +78,6 @@ function AppWrapper() {
               </>
             )}
 
-            {/* Kontakt immer sichtbar */}
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link to="/contact" className="text-gray-600 hover:underline text-sm px-2 py-1">
@@ -105,22 +104,8 @@ function AppWrapper() {
         <Routes>
           <Route path="/" element={<WelcomePage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route
-            path="/list"
-            element={
-              <ProtectedRoute>
-                <ShoppingListPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/list" element={<ProtectedRoute><ShoppingListPage /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         </Routes>
       </main>
     </>
