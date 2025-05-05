@@ -1,51 +1,15 @@
 // src/pages/WelcomePage.tsx
 import React from "react";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Auth } from '@supabase/auth-ui-react';
+import { ThemeSupa } from '@supabase/auth-ui-shared';
+import { supabase } from '../lib/supabaseClient';
 
-function WelcomePage() {
+export default function WelcomePage() {
   return (
-    <div className="min-h-screen flex justify-center mt-10">
-      <Card className="w-[350px] h-[400px]">
-        <CardHeader>
-          <CardTitle>Login</CardTitle>
-          <CardDescription>Melde dich mit deinen Zugangsdaten an.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="email">E-Mail</Label>
-              <Input id="email" type="email" placeholder="deine@email.de" />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="password">Passwort</Label>
-              <Input id="password" type="password" placeholder="••••••••" />
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col items-start gap-2">
-          <Button className="w-full">Login</Button>
-          <Link to="/forgetPassword" className="text-sm text-gray-600 hover:underline">
-            Passwort vergessen?
-          </Link>
-          <Link to="/registration" className="text-sm text-gray-600 hover:underline">
-            Jetzt registrieren
-          </Link>
-        </CardFooter>
-      </Card>
+    <div>
+      <h1>Willkommen!</h1>
+      <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />
     </div>
   );
 }
-
-export default WelcomePage;
