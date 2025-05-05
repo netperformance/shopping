@@ -15,7 +15,7 @@ export default function WelcomePage() {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader>
           <CardTitle>Willkommen bei Shopping!</CardTitle>
-          <CardDescription>Bitte melde dich an oder registriere dich.</CardDescription>
+          <CardDescription>Deine digitale Einkaufsliste.<br/>Melde dich an oder registriere dich.</CardDescription>
         </CardHeader>
         <CardContent>
           <Auth

@@ -4,6 +4,7 @@ import { cva } from "class-variance-authority"
 import { ChevronDownIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import logo from "@/assets/shopping-logo.jpg" 
 
 function NavigationMenu({
   className,
@@ -14,18 +15,27 @@ function NavigationMenu({
   viewport?: boolean
 }) {
   return (
-    <NavigationMenuPrimitive.Root
-      data-slot="navigation-menu"
-      data-viewport={viewport}
-      className={cn(
-        "group/navigation-menu relative flex max-w-max flex-1 items-center justify-center",
-        className
-      )}
-      {...props}
-    >
-      {children}
-      {viewport && <NavigationMenuViewport />}
-    </NavigationMenuPrimitive.Root>
+    <div className="flex items-center justify-between w-full px-6 py-4">
+      {/* Logo links */}
+      <div className="flex items-center gap-2">
+        <img src={logo} alt="Shopping Logo" className="h-10 w-auto" />
+        <span className="text-xl font-bold">Shopping</span>
+      </div>
+
+      {/* Navigation rechts */}
+      <NavigationMenuPrimitive.Root
+        data-slot="navigation-menu"
+        data-viewport={viewport}
+        className={cn(
+          "group/navigation-menu relative flex max-w-max items-center justify-end",
+          className
+        )}
+        {...props}
+      >
+        {children}
+        {viewport && <NavigationMenuViewport />}
+      </NavigationMenuPrimitive.Root>
+    </div>
   )
 }
 
