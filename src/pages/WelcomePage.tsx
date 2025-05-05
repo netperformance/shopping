@@ -1,21 +1,50 @@
-import { Auth } from '@supabase/auth-ui-react';
-import { ThemeSupa } from '@supabase/auth-ui-shared';
-import { supabase } from '../lib/supabaseClient';
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Auth } from '@supabase/auth-ui-react'
+import { ThemeSupa } from '@supabase/auth-ui-shared'
+import { supabase } from '../lib/supabaseClient'
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-} from '@/components/ui/card';
+} from '@/components/ui/card'
 
 export default function WelcomePage() {
+  const navigate = useNavigate()
+
+  // 🚫 Bereits eingeloggt? → sofort weiterleiten
+  useEffect(() => {
+    // Initiale Session prüfen
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        navigate('/list')
+      }
+    })
+
+    // Live-Änderungen beobachten (Login, Signup etc.)
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        if (session) {
+          navigate('/list')
+        }
+      }
+    )
+
+    return () => listener?.subscription.unsubscribe()
+  }, [navigate])
+
   return (
     <div className="flex justify-center items-center pt-4">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader>
           <CardTitle>Willkommen bei Shopping!</CardTitle>
-          <CardDescription>Deine digitale Einkaufsliste.<br/>Melde dich an oder registriere dich.</CardDescription>
+          <CardDescription>
+            Deine digitale Einkaufsliste.
+            <br />
+            Melde dich an oder registriere dich.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Auth
@@ -54,7 +83,8 @@ export default function WelcomePage() {
                   email_input_placeholder: 'Deine E-Mail-Adresse',
                   link_text: 'Passwort vergessen?',
                   button_label: 'Link zum Zurücksetzen senden',
-                  confirmation_text: 'Prüfe deine E-Mail auf den Link zum Zurücksetzen.',
+                  confirmation_text:
+                    'Prüfe deine E-Mail auf den Link zum Zurücksetzen.',
                 },
                 update_password: {
                   password_label: 'Neues Passwort',
@@ -64,10 +94,11 @@ export default function WelcomePage() {
                 },
               },
             }}
-            providers={['google', 'facebook', 'spotify', 'github']}
+            providers={['google']}
+            redirectTo="http://localhost:5173/list"
           />
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
