@@ -1,3 +1,4 @@
+// src/App.tsx
 import { useEffect, useState } from "react"
 import {
   BrowserRouter,
@@ -20,7 +21,8 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 
-import logo from "@/assets/shopping-logo.jpg" // Logo-Datei importieren
+import logo from "@/assets/shopping-logo.jpg"
+import ProtectedRoute from "./components/ProtectedRoute" // 🔐 Import hinzugefügt
 
 function AppWrapper() {
   const [session, setSession] = useState(null)
@@ -41,7 +43,7 @@ function AppWrapper() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
-    navigate("/") // Zurück zur Welcome-Seite
+    navigate("/")
   }
 
   const isWelcomePage = location.pathname === "/"
@@ -49,53 +51,60 @@ function AppWrapper() {
   return (
     <>
       <header className="border-b mb-4 px-4 py-3 flex items-center justify-between">
-        {/* ✅ Logo nur hier links */}
         <div className="flex items-center gap-2">
           <img src={logo} alt="Logo" className="h-8 w-auto" />
           <span className="text-lg font-semibold">Shopping</span>
         </div>
 
-        {/* ❌ Logo darf hier NICHT nochmal auftauchen */}
-        {!isWelcomePage && (
+        {!isWelcomePage && session && (
           <NavigationMenu>
             <NavigationMenuList className="flex gap-4 items-center">
-              {session && (
-                <>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                      <Link to="/list" className="text-gray-600 hover:underline text-sm px-2 py-1">
-                        Einkaufsliste
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                      <Link to="/profile" className="text-gray-600 hover:underline text-sm px-2 py-1">
-                        Profil
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <button
-                      onClick={handleLogout}
-                      className="text-sm text-gray-600 hover:underline px-2 py-1 pb-3.5"
-                    >
-                      Logout
-                    </button>
-                  </NavigationMenuItem>
-                </>
-              )}
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild>
+                  <Link to="/list" className="text-gray-600 hover:underline text-sm px-2 py-1">
+                    Einkaufsliste
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild>
+                  <Link to="/profile" className="text-gray-600 hover:underline text-sm px-2 py-1">
+                    Profil
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <button
+                  onClick={handleLogout}
+                  className="text-sm text-gray-600 hover:underline px-2 py-1 pb-3.5"
+                >
+                  Logout
+                </button>
+              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         )}
       </header>
 
-
       <main className="p-4">
         <Routes>
           <Route path="/" element={<WelcomePage />} />
-          <Route path="/list" element={<ShoppingListPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route
+            path="/list"
+            element={
+              <ProtectedRoute>
+                <ShoppingListPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
     </>
