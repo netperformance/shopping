@@ -11,6 +11,8 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import WelcomePage from "./pages/WelcomePage";
+import RegistrationPage from "./pages/RegistrationPage";
+import ForgetPassword from "./pages/ForgetPassword";
 
 function App() {
   return (
@@ -49,6 +51,8 @@ function App() {
           <Route path="/" element={<WelcomePage />} />
           <Route path="/list" element={<ShoppingListPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/registration" element={<RegistrationPage />} />
+          <Route path="/forgetPassword" element={<ForgetPassword />} />
         </Routes>
       </main>
     </BrowserRouter>
