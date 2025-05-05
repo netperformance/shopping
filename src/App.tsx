@@ -1,6 +1,12 @@
-// src/App.tsx
 import { useEffect, useState } from "react"
-import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom"
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  useLocation,
+} from "react-router-dom"
 import ShoppingListPage from "./pages/ShoppingListPage"
 import ProfilePage from "./pages/ProfilePage"
 import WelcomePage from "./pages/WelcomePage"
@@ -14,17 +20,18 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 
+import logo from "@/assets/shopping-logo.jpg" // Logo-Datei importieren
+
 function AppWrapper() {
   const [session, setSession] = useState(null)
   const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
-    // Initiale Session abfragen
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
     })
 
-    // Auth-Änderungen beobachten
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
     })
@@ -37,51 +44,52 @@ function AppWrapper() {
     navigate("/") // Zurück zur Welcome-Seite
   }
 
+  const isWelcomePage = location.pathname === "/"
+
   return (
     <>
-      <header className="border-b mb-4">
-        <NavigationMenu>
-          <NavigationMenuList className="flex gap-4">
-            {/* Nur zeigen, wenn **nicht** eingeloggt */}
-            {!session && (
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <Link to="/" className="text-gray-600 hover:underline text-sm px-2 py-1">
-                    Welcome
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            )}
-            {/* Diese Seiten nur anzeigen, wenn eingeloggt */}
-            {session && (
-              <>
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link to="/list" className="text-gray-600 hover:underline text-sm px-2 py-1">
-                      Einkaufsliste
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link to="/profile" className="text-gray-600 hover:underline text-sm px-2 py-1">
-                      Profil
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <button
-                    onClick={handleLogout}
-                    className="text-sm text-gray-600 hover:underline px-2 py-1 pb-3.5"
-                  >
-                    Logout
-                  </button>
-                </NavigationMenuItem>
-              </>
-            )}
-          </NavigationMenuList>
-        </NavigationMenu>
+      <header className="border-b mb-4 px-4 py-3 flex items-center justify-between">
+        {/* ✅ Logo nur hier links */}
+        <div className="flex items-center gap-2">
+          <img src={logo} alt="Logo" className="h-8 w-auto" />
+          <span className="text-lg font-semibold">Shopping</span>
+        </div>
+
+        {/* ❌ Logo darf hier NICHT nochmal auftauchen */}
+        {!isWelcomePage && (
+          <NavigationMenu>
+            <NavigationMenuList className="flex gap-4 items-center">
+              {session && (
+                <>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink asChild>
+                      <Link to="/list" className="text-gray-600 hover:underline text-sm px-2 py-1">
+                        Einkaufsliste
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink asChild>
+                      <Link to="/profile" className="text-gray-600 hover:underline text-sm px-2 py-1">
+                        Profil
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <button
+                      onClick={handleLogout}
+                      className="text-sm text-gray-600 hover:underline px-2 py-1 pb-3.5"
+                    >
+                      Logout
+                    </button>
+                  </NavigationMenuItem>
+                </>
+              )}
+            </NavigationMenuList>
+          </NavigationMenu>
+        )}
       </header>
+
 
       <main className="p-4">
         <Routes>
@@ -94,7 +102,6 @@ function AppWrapper() {
   )
 }
 
-// BrowserRouter außerhalb, damit useNavigate funktioniert
 export default function App() {
   return (
     <BrowserRouter>

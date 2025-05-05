@@ -16,10 +16,9 @@ function NavigationMenu({
 }) {
   return (
     <div className="flex items-center justify-between w-full px-6 py-4">
-      {/* Logo links */}
+
       <div className="flex items-center gap-2">
-        <img src={logo} alt="Shopping Logo" className="h-10 w-auto" />
-        <span className="text-xl font-bold">Shopping</span>
+
       </div>
 
       {/* Navigation rechts */}
