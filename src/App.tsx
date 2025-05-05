@@ -76,7 +76,7 @@ function AppWrapper() {
               <NavigationMenuItem>
                 <button
                   onClick={handleLogout}
-                  className="text-sm text-gray-600 hover:underline px-2 py-1 pb-3.5"
+                  className="text-sm text-red-600 hover:underline px-2 py-1 pb-3.5"
                 >
                   Logout
                 </button>

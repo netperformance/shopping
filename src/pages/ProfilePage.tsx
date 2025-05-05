@@ -33,7 +33,7 @@ function ProfilePage() {
 
   return (
     <div className="p-4">
-      <p className="text-gray-500">
+      <p className="text-gray-500 text-sm">
         Drücke den Button unten, um dein Konto und alle deine Einkaufslisten vollständig aus dem System zu entfernen.
       </p>
 
