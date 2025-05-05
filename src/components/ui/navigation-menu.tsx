@@ -4,7 +4,6 @@ import { cva } from "class-variance-authority"
 import { ChevronDownIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import logo from "@/assets/shopping-logo.jpg" 
 
 function NavigationMenu({
   className,
@@ -15,7 +14,7 @@ function NavigationMenu({
   viewport?: boolean
 }) {
   return (
-    <div className="flex items-center justify-between w-full px-6 py-4">
+    <div className="flex items-center justify-between w-full">
 
       <div className="flex items-center gap-2">
 
