@@ -15,12 +15,8 @@ dist
 dist-ssr
 
 # Local environment
+.env
 *.local
-
-# Docker (falls vorhanden)
-Dockerfile
-docker-compose.yml
-nginx/
 
 # Editor config
 .vscode/*
