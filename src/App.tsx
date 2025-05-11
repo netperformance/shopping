@@ -51,13 +51,13 @@ function AppWrapper() {
 
   return (
     <>
-      <header className="border-b px-4 flex items-center justify-between">
+      <header className="border-b px-4 pb-2 flex items-center justify-between">
         <Link to={session ? "/list" : "/"} className="flex items-center gap-2">
           <img src={logo} alt="Logo" className="h-8 w-auto" />
         </Link>
 
         <NavigationMenu>
-          <NavigationMenuList className="flex gap-4 items-center">
+          <NavigationMenuList className="flex gap-1.5 items-center">
             {session && !isWelcomePage && (
               <>
                 <NavigationMenuItem>

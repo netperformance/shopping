@@ -36,7 +36,7 @@ export default function WelcomePage() {
   }, [navigate])
 
   return (
-    <div className="flex justify-center items-center pt-4">
+    <div className="flex justify-center items-center">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader>
           <CardTitle>Willkommen bei Shopping!</CardTitle>
