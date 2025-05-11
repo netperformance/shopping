@@ -51,10 +51,9 @@ function AppWrapper() {
 
   return (
     <>
-      <header className="border-b mb-4 px-4 py-3 flex items-center justify-between">
+      <header className="border-b px-4 flex items-center justify-between">
         <Link to={session ? "/list" : "/"} className="flex items-center gap-2">
           <img src={logo} alt="Logo" className="h-8 w-auto" />
-          <span className="text-lg font-semibold">Shopping</span>
         </Link>
 
         <NavigationMenu>
